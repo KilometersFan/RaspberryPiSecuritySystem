@@ -51,6 +51,6 @@ if __name__ == '__main__':
 		#write to the config file
 		configFile = open("config.txt", "w+")
 		for key in keys:
-			configFile.write(key)
+			configFile.write(str(key))
 	else:
 		isConfigured = True
