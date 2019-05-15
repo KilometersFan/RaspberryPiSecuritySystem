@@ -1,4 +1,5 @@
 import sys
+import time
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
 import grove_rgb_lcd as lcd
@@ -19,6 +20,8 @@ grovepi.pinMode(PORT_GREEN_LED, "OUTPUT")
 while True:
 	try :
 		grovepi.digitalWrite(PORT_GREEN_LED,1)
+		time.sleep(1)
+		grovepi.digitalWrite(PORT_GREEN_LED,0)
 	except KeyboardInterrupt:
 		grovepi.digitalWrite(PORT_GREEN_LED,0)
 		break
