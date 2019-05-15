@@ -30,24 +30,27 @@ if __name__ == '__main__':
 	#configuration setup
 	isConfigured = False
 	if(not os.path.isfile("config.txt")):
-		currentInt = 1
-		int1 = 0
-		int2 = 0
-		int3 = 0
+		currentKey = 1
+		keys = [0,0,0]
+		#have user create combination lock
 		while(not isConfigured):
-			if(currentInt == 1):
-				int1 = get_value()
-			elif(currentInt == 2):
-				int2 = get_value()
-			elif(currentInt == 3):
-				int3 = get_value()
+			if(currentKey == 1):
+				keys[0] = get_value()
+			elif(currentKey == 2):
+				keys[1] = get_value()
+			elif(currentKey == 3):
+				keys[2] = get_value()
 			else:
 				isConfigured = True
-			lcd.setText_norefresh("Set Password: {}\n{:>3}, {:>3}, {:>3}".format(currentInt, int1, int2, int3))
+			lcd.setText_norefresh("Set Combination:\n{:>3}, {:>3}, {:>3}".format(keys[0], keys[1], keys[2]))
 			if(grovepi.digitalRead(PORT_BUTTON)):
-				currentInt += 1
+				currentKey += 1
 				grovepi.digitalWrite(PORT_BUZZER,1)
 			time.sleep(0.2)
 			grovepi.digitalWrite(PORT_BUZZER,0)
+		#write to the config file
+		configFile = open("config.txt", "w+")
+		for key in keys:
+			configFile.write(key)
 	else:
 		isConfigured = True
