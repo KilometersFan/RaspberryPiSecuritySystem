@@ -30,11 +30,11 @@ if __name__ == '__main__':
 	#configuration setup
 	isConfigured = False
 	if(not os.path.isfile("config.txt")):
+		currentInt = 1
+		int1 = 0
+		int2 = 0
+		int3 = 0
 		while(not isConfigured):
-			int1 = 0
-			int2 = 0
-			int3 = 0
-			currentInt = 1
 			if(currentInt == 1):
 				int1 = get_value()
 			elif(currentInt == 2):
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 				int3 = get_value()
 			else:
 				isConfigured = True
-			lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
+			lcd.setText_norefresh("Set Password: {}\n{:>3}, {:>3}, {:>3}".format(currentInt, int1, int2, int3))
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentInt += 1
 				grovepi.digitalWrite(PORT_BUZZER,1)
