@@ -48,5 +48,6 @@ if __name__ == '__main__':
 				currentInt += 1
 				grovepi.digitalWrite(PORT_BUZZER,1)
 			time.sleep(0.2)
+			grovepi.digitalWrite(PORT_BUZZER,0)
 	else:
 		isConfigured = True
