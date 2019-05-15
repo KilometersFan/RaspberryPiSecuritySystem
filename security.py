@@ -22,6 +22,7 @@ while True:
 		grovepi.digitalWrite(PORT_GREEN_LED,1)
 		time.sleep(1)
 		grovepi.digitalWrite(PORT_GREEN_LED,0)
+		time.sleep(1)
 	except KeyboardInterrupt:
 		grovepi.digitalWrite(PORT_GREEN_LED,0)
 		break
