@@ -1,3 +1,4 @@
+import sys
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
 import grove_rgb_lcd as lcd
