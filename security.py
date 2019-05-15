@@ -19,7 +19,7 @@ grovepi.pinMode(PORT_RED_LED, "OUTPUT")
 grovepi.pinMode(PORT_GREEN_LED, "OUTPUT")
 
 while True:
-	if(!os.path.isfile("config.txt")):
+	if(not os.path.isfile("config.txt")):
 		int1 = 0
 		int2 = 0
 		int3 = 0
