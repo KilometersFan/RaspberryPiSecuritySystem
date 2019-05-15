@@ -18,10 +18,38 @@ grovepi.pinMode(PORT_ROTARY,"INPUT")
 grovepi.pinMode(PORT_RED_LED, "OUTPUT")
 grovepi.pinMode(PORT_GREEN_LED, "OUTPUT")
 lcd.setRGB(255,255,255)
-while True:
+
+def get_value():
+	sensor_value = grovepi.analogRead(PORT_ROTARY)
+    key_f = 0
+    slope = 40/1023
+    key_f = 60 + round(sensor_value*slope)
+    return int(key_f)
+
+if __name__ == '__main__':
+	#configuration setup
+	bool isConfigured = False
 	if(not os.path.isfile("config.txt")):
-		int1 = 0
-		int2 = 0
-		int3 = 0
-		lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
+		while(not isConfigured):
+			int1 = 0
+			int2 = 0
+			int3 = 0
+			currentInt = 1
+			if(currentInt == 1):
+				int1 = get_value()
+			elif(currentInt == 2):
+				int2 = get_value()
+			elif(currentInt == 3):
+				int3 = get_value()
+			else:
+				isConfigured = True
+			lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
+			if(grovepi.digitalRead(PORT_BUTTON)):
+				currentInt++
+	else:
+		isConfigured = True
+
+	#main loop
+	while True:
+	
 		
