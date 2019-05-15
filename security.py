@@ -21,10 +21,10 @@ lcd.setRGB(255,255,255)
 
 def get_value():
 	sensor_value = grovepi.analogRead(PORT_ROTARY)
-    key_f = 0
-    slope = 40/1023
-    key_f = 60 + round(sensor_value*slope)
-    return int(key_f)
+	key_f = 0
+	slope = 40/1023
+	key_f = 60 + round(sensor_value*slope)
+	return int(key_f)
 
 if __name__ == '__main__':
 	#configuration setup
