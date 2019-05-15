@@ -48,8 +48,3 @@ if __name__ == '__main__':
 				currentInt += 1
 	else:
 		isConfigured = True
-
-	#main loop
-	while True:
-	
-		
