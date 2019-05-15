@@ -1,5 +1,6 @@
 import sys
 import time
+import os.path
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
 import grove_rgb_lcd as lcd
@@ -18,11 +19,9 @@ grovepi.pinMode(PORT_RED_LED, "OUTPUT")
 grovepi.pinMode(PORT_GREEN_LED, "OUTPUT")
 
 while True:
-	try :
-		grovepi.digitalWrite(PORT_GREEN_LED,1)
-		time.sleep(1)
-		grovepi.digitalWrite(PORT_GREEN_LED,0)
-		time.sleep(1)
-	except KeyboardInterrupt:
-		grovepi.digitalWrite(PORT_GREEN_LED,0)
-		break
+	if(!os.path.isfile("config.txt")):
+		int1 = 0
+		int2 = 0
+		int3 = 0
+		lcd.lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
+		
