@@ -29,28 +29,33 @@ def get_value():
 if __name__ == '__main__':
 	#configuration setup
 	isConfigured = False
-	if(not os.path.isfile("config.txt")):
+	if(not os.path.isfile("security_config.txt")):
+		configState = 1
 		currentKey = 1
 		keys = [0,0,0]
+		distance = 0
 		#have user create combination lock
 		while(not isConfigured):
-			if(currentKey == 1):
-				keys[0] = get_value()
-			elif(currentKey == 2):
-				keys[1] = get_value()
-			elif(currentKey == 3):
-				keys[2] = get_value()
+			if(configState == 1):
+				if(currentKey == 1):
+					keys[0] = get_value()
+				elif(currentKey == 2):
+					keys[1] = get_value()
+				elif(currentKey == 3):
+					keys[2] = get_value()
+				else:
+					isConfigured = True
+				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
+				if(grovepi.digitalRead(PORT_BUTTON)):
+					currentKey += 1
+					grovepi.digitalWrite(PORT_BUZZER,1)
+				grovepi.digitalWrite(PORT_BUZZER,0)
 			else:
-				isConfigured = True
-			lcd.setText_norefresh("Set Combination:\n{:>3}, {:>3}, {:>3}".format(keys[0], keys[1], keys[2]))
-			if(grovepi.digitalRead(PORT_BUTTON)):
-				currentKey += 1
-				grovepi.digitalWrite(PORT_BUZZER,1)
+				distance = get_value()
+				lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
 			time.sleep(0.2)
-			grovepi.digitalWrite(PORT_BUZZER,0)
 		#write to the config file
-		configFile = open("config.txt", "w+")
+		configFile = open("security_config.txt", "w+")
 		for key in keys:
-			configFile.write(str(key))
-	else:
-		isConfigured = True
+			configFile.write(str(key)+"\n")
+		configFile.write(distance)
