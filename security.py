@@ -45,7 +45,7 @@ if __name__ == '__main__':
 				isConfigured = True
 			lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
 			if(grovepi.digitalRead(PORT_BUTTON)):
-				currentInt++
+				currentInt += 1
 	else:
 		isConfigured = True
 
