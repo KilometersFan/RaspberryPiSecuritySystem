@@ -28,7 +28,7 @@ def get_value():
 
 if __name__ == '__main__':
 	#configuration setup
-	bool isConfigured = False
+	isConfigured = False
 	if(not os.path.isfile("config.txt")):
 		while(not isConfigured):
 			int1 = 0
