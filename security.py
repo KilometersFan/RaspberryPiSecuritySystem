@@ -23,5 +23,5 @@ while True:
 		int1 = 0
 		int2 = 0
 		int3 = 0
-		lcd.lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
+		lcd.setText_norefresh("Set Password:\n{:>3}, {:>3}, {:>3}".format(int1, int2, int3))
 		
