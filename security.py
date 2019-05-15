@@ -17,7 +17,7 @@ grovepi.pinMode(PORT_BUTTON, "INPUT")
 grovepi.pinMode(PORT_ROTARY,"INPUT") 
 grovepi.pinMode(PORT_RED_LED, "OUTPUT")
 grovepi.pinMode(PORT_GREEN_LED, "OUTPUT")
-
+lcd.setRGB(255,255,255)
 while True:
 	if(not os.path.isfile("config.txt")):
 		int1 = 0
