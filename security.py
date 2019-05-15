@@ -22,8 +22,8 @@ lcd.setRGB(255,255,255)
 def get_value():
 	sensor_value = grovepi.analogRead(PORT_ROTARY)
 	key_f = 0
-	slope = 40/1023
-	key_f = 60 + round(sensor_value*slope)
+	slope = 300/1023
+	key_f = round(sensor_value*slope)
 	return int(key_f)
 
 if __name__ == '__main__':
@@ -44,18 +44,20 @@ if __name__ == '__main__':
 				elif(currentKey == 3):
 					keys[2] = get_value()
 				else:
-					isConfigured = True
+					configState += 1
 				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 				if(grovepi.digitalRead(PORT_BUTTON)):
 					currentKey += 1
 					grovepi.digitalWrite(PORT_BUZZER,1)
-				grovepi.digitalWrite(PORT_BUZZER,0)
 			else:
 				distance = get_value()
 				lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
+				if(grovepi.digitalRead(PORT_BUTTON)):
+					isConfigured = True
 			time.sleep(0.2)
+			grovepi.digitalWrite(PORT_BUZZER,0)
 		#write to the config file
 		configFile = open("security_config.txt", "w+")
 		for key in keys:
 			configFile.write(str(key)+"\n")
-		configFile.write(distance)
+		configFile.write(str(distance) + "\n")
