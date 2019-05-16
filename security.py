@@ -149,6 +149,8 @@ if __name__ == '__main__':
 					deviceState = 3
 				else:
 					lcd.setRGB(255,0,0)
+			if(grovepi.digitalRead(PORT_BUTTON)):
+				currentKey += 1
 			grovepi.digitalWrite(PORT_BUZZER,1)
 			grovepi.digitalWrite(PORT_RED_LED,1)
 			#if(timeDiff  >= 30):
