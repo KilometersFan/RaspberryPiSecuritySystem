@@ -26,6 +26,23 @@ def get_value():
 	key_f = round(sensor_value*slope)
 	return int(key_f)
 
+def validateInput(type, userInput):
+	if (type == 1):
+		try:
+			if(int(input)):
+				if(int(input) <= 300 and int(input) >= 0):
+					return True
+		except: 
+			return False
+	elif(type == 2):
+		try:
+			if(int(input)):
+				if(int(input) <= 513 and int(input) >= 0):
+					return True
+		except: 
+			return False
+	return False		
+
 def configureDevice():
 	isConfigured = False
 	configState = 1
@@ -37,21 +54,21 @@ def configureDevice():
 		if(configState == 1):
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
+			temp = input()
+			while(!validateInput(temp)):
+				print("Invalid input. Keys must be between 0 and 300")
+				temp = input()
 			if(currentKey == 1):
-				print(1)
-				keys[0] = input()
+				keys[0] = temp
 			elif(currentKey == 2):
-				print(2)
-				keys[1] = input()
+				keys[1] = temp
 			elif(currentKey == 3):
-				print(3)
-				keys[2] = input()
+				keys[2] = temp
 			else:
 				configState += 1
 				lcd.setText("")
-			# if(grovepi.digitalRead(PORT_BUTTON)):
 			currentKey += 1
-				# grovepi.digitalWrite(PORT_BUZZER,1)
+			grovepi.digitalWrite(PORT_BUZZER,1)
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
 			distance = input()
