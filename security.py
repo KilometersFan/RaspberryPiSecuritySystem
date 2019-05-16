@@ -41,6 +41,9 @@ def validateInput(type, userInput):
 					return True
 		except: 
 			return False
+	elif(type == 3):
+		if(userInput[-10:] != "@gmail.com"):
+			return False
 	return False		
 
 def configureDevice():
@@ -54,10 +57,10 @@ def configureDevice():
 		if(configState == 1):
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
-			temp = input("Enter a key value between 0 and 300.")
+			temp = input("Enter a key value between 0 and 300: ")
 			while(not validateInput(1, temp) and currentKey <= 4):
 				print("Invalid input. Keys must be between 0 and 300.")
-				temp = input("Enter a key value between 0 and 300.")
+				temp = input("Enter a key value between 0 and 300: ")
 			if(currentKey == 1):
 				keys[0] = temp
 			elif(currentKey == 2):
@@ -70,21 +73,26 @@ def configureDevice():
 				lcd.setText("")
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
-			distance = input()
+			distance = input("Enter a distance value between 0 and 513: ")
 			while (not validateInput(2, distance)):
 				print("Invalid input. Distance must be between 0 and 513.")
-				distance = input("Enter a distance value between 0 and 513.")
-			lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
-			currentKey += 1
+				distance = input("Enter a distance value between 0 and 513: ")
+			lcd.setText_norefresh("Set Distance:\n{}".format(distance))
+			configState += 1
 		elif(configState == 3):
-			number = input("Enter a phone number to send sms alerts to.")
-			lcd.setText_norefresh("Set Phone:\n{:>3}".format(number))
+			number = input("Enter a phone number to send sms alerts to: ")
+			lcd.setText_norefresh("Set Phone:\n{}".format(number))
+			configState += 1
 		else:
-			email = input("Enter an email to send smtp alerts to.")
+			email = input("Enter a gmail address to send smtp alerts to: ")
+			while (not validateInput(3, email)):
+				print("Please enter a gmail address.")
+				email = input("Enter a gmail address to send smtp alerts to: ")
 			shortEmail = email
 			if(len(email) > 16):
 				shortEmail = shortEmail[:16]
 			lcd.setText_norefresh("Set Email:\n{}".format(shortEmail))
+			isConfigured = True
 		grovepi.digitalWrite(PORT_BUZZER,1)
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
