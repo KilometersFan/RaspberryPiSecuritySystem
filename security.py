@@ -72,7 +72,7 @@ if __name__ == '__main__':
 		configureDevice()
 	#import user settings
 	configFile = open("security_config.txt", "r+")
-	lines = configFile.readLines()
+	lines = configFile.readlines()
 	combo = [int(lines[0], int(lines[1]), int(lines[2]))]
 	distance = int(lines[3])
 	print(lines)
