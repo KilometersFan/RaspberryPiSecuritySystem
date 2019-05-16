@@ -102,8 +102,10 @@ def configureDevice():
 	lcd.setRGB(0,0,0)
 	configFile = open("security_config.txt", "w+")
 	for key in keys:
-		configFile.write(str(key)+"\n")
+		configFile.write(str(key) +"\n")
 	configFile.write(str(distance) + "\n")
+	configFile.write(str(number) + "\n")
+	configFile.write(str(email) + "\n")
 
 def validateCombo(userKeys, keys):
 	for i in range(3):
@@ -116,40 +118,43 @@ if __name__ == '__main__':
 	if(not os.path.isfile("security_config.txt")):
 		configureDevice()
 	#import user settings
-	# configFile = open("security_config.txt", "r+")
-	# lines = configFile.readlines()
-	# combo = [int(lines[0]), int(lines[1]), int(lines[2])]
-	# distance = int(lines[3])
-	# # print(combo)
-	# alarm = False
-	# #main loop logic
-	# keys = [0,0,0]
-	# currentKey = 1
-	# while True:
-	# 	if(not alarm):
-	# 		measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
-	# 		if(measured_distance < distance -5 or measured_distance > distance + 5):
-	# 			alarm = True
-	# 		start = time.time()
-	# 	else:
-	# 		timeDiff = int(time.time()) - int(start)
-	# 		lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(timeDiff, keys[0], keys[1], keys[2]))
-	# 		if(currentKey == 1):
-	# 			keys[0] = get_value()
-	# 		elif(currentKey == 2):
-	# 			keys[1] = get_value()
-	# 		elif(currentKey == 3):
-	# 			keys[2] = get_value()
-	# 		# else:
-	# 		# 	if(validateCombo(keys, combo)):
-	# 		# 		disarm()
-	# 		# 	else:
-	# 		# 		#send notification to user
-	# 		grovepi.digitalWrite(PORT_BUZZER,1)
-	# 		grovepi.digitalWrite(PORT_RED_LED, 1)
-	# 		#if(timeDiff  >= 30):
-	# 			#send sms and email
+	configFile = open("security_config.txt", "r+")
+	lines = configFile.readlines()
+	combo = [int(lines[0]), int(lines[1]), int(lines[2])]
+	distance = int(lines[3])
+	deviceState = 1
+	#main loop logic
+	keys = [0,0,0]
+	currentKey = 1
+	lcd.setRGB(0,0,0)
+	while True:
+		if(deviceState == 1):
+			grovepi.digitalWrite(PORT_GREEN_LED,1)
+			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
+			if(measured_distance < distance -5 or measured_distance > distance + 5):
+				deviceState = 2
+			start = time.time()
+		elif(deviceState == 2):
+			lcd.setRGB(255,255,255)
+			timeDiff = int(time.time()) - int(start)
+			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(timeDiff, keys[0], keys[1], keys[2]))
+			if(currentKey == 1):
+				keys[0] = get_value()
+			elif(currentKey == 2):
+				keys[1] = get_value()
+			elif(currentKey == 3):
+				keys[2] = get_value()
+			else:
+				if(validateCombo(keys, combo)):
+					deviceState = 3
+				else:
+					lcd.setRGB(255,0,0)
+			grovepi.digitalWrite(PORT_BUZZER,1)
+			grovepi.digitalWrite(PORT_RED_LED,1)
+			#if(timeDiff  >= 30):
+				#send sms and email
 
-	# 	time.sleep(0.2)
-	# 	grovepi.digitalWrite(PORT_BUZZER,0)
-	# 	grovepi.digitalWrite(PORT_RED_LED,0)
+		time.sleep(0.2)
+		grovepi.digitalWrite(PORT_BUZZER,0)
+		grovepi.digitalWrite(PORT_RED_LED,0)
+		grovepi.digitalWrite(PORT_GREEN_LED,0)
