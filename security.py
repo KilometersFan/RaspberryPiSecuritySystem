@@ -42,7 +42,7 @@ def validateInput(type, userInput):
 		except: 
 			return False
 	elif(type == 3):
-		if(userInput[-10:] != "@gmail.com"):
+		if("@gmail.com" not in userInput):
 			return False
 	return False		
 
@@ -52,7 +52,7 @@ def configureDevice():
 	currentKey = 1
 	keys = ["0","0","0"]
 	distance = "0"
-	number, email, shortEmail = "", "", ""
+	number, email = "", ""
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
@@ -87,14 +87,11 @@ def configureDevice():
 			configState += 1
 			lcd.setText("")
 		else:
-			lcd.setText_norefresh("Set Email:\n{}".format(shortEmail))
+			lcd.setText_norefresh("Set Email:\n{}".format(email))
 			email = input("Enter a gmail address to send smtp alerts to: ")
 			while (not validateInput(3, email)):
 				print("Please enter a gmail address.")
 				email = input("Enter a gmail address to send smtp alerts to: ")
-			shortEmail = email
-			if(len(email) > 16):
-				shortEmail = shortEmail[:16]
 			lcd.setText("")
 			isConfigured = True
 		grovepi.digitalWrite(PORT_BUZZER,1)
