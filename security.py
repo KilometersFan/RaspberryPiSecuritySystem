@@ -87,6 +87,7 @@ if __name__ == '__main__':
 			start = time.time()
 		else:
 			timeDiff = int(time.time()) - start
+			print(timeDiff)
 			#if(timeDiff  >= 30):
 				#do stuff
 			lcd.setText_norefresh("WARNING: {:>2} sec".format(timeDiff))
