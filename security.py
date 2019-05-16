@@ -45,6 +45,7 @@ if __name__ == '__main__':
 					keys[2] = get_value()
 				else:
 					configState += 1
+					lcd.setText("")
 				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 				if(grovepi.digitalRead(PORT_BUTTON)):
 					currentKey += 1
@@ -54,6 +55,7 @@ if __name__ == '__main__':
 				lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
 				if(grovepi.digitalRead(PORT_BUTTON)):
 					isConfigured = True
+					grovepi.digitalWrite(PORT_BUZZER,1)
 			time.sleep(0.2)
 			grovepi.digitalWrite(PORT_BUZZER,0)
 		#write to the config file
