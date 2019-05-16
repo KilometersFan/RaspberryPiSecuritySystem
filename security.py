@@ -161,16 +161,18 @@ if __name__ == '__main__':
 		elif(deviceState == 3):
 			count = 0
 			index = 0
+			end = min(index + 15, len(msg)-1)
 			msg = "HOLD BTN 5 SEC TO DISARM"
 			lcd.setText_norefresh("DEVICE DISARMED")
-			lcd.setText_norefresh("\n"+msg[index:index+15])
+			lcd.setText_norefresh("\n"+msg[index:end])
 			while(grovepi.digitalRead(PORT_BUTTON)):
 				count += 1
-				if(count == 25):
+				time.sleep(0.2)
+				if(count >= 25):
 					deviceState = 1
 			index += 1
-			if(index > len(msg)):
-				index  = 0
+			if(index > len(msg)-1):
+				index = 0
 
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
