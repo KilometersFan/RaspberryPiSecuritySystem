@@ -29,8 +29,8 @@ def get_value():
 
 def get_keypress():
 	userInput = keyboard.record(until = 'enter')
-	print(userInput)
-	return userInput
+	print("recorded!")
+	return str(userInput)
 
 def configureDevice():
 	isConfigured = False
