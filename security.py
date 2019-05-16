@@ -37,6 +37,7 @@ if __name__ == '__main__':
 		#have user create combination lock
 		while(not isConfigured):
 			if(configState == 1):
+				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 				if(currentKey == 1):
 					keys[0] = get_value()
 				elif(currentKey == 2):
@@ -46,7 +47,6 @@ if __name__ == '__main__':
 				else:
 					configState += 1
 					lcd.setText("")
-				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 				if(grovepi.digitalRead(PORT_BUTTON)):
 					currentKey += 1
 					grovepi.digitalWrite(PORT_BUZZER,1)
