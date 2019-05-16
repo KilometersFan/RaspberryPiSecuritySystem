@@ -45,11 +45,11 @@ def configureDevice():
 			#Change key one by one by pressing button
 			if(currentKey == 1):
 				print(1)
-				keys[0] = keyboard.get_typed_strings(keyboard.record(until = 'Space'))
+				keys[0] = input()
 			elif(currentKey == 2):
-				keys[1] = keyboard.get_typed_strings(keyboard.record(until = 'Space'))
+				keys[1] = input()
 			elif(currentKey == 3):
-				keys[2] = keyboard.get_typed_strings(keyboard.record(until = 'Space'))
+				keys[2] = input()
 			else:
 				configState += 1
 				lcd.setText("")
@@ -58,13 +58,13 @@ def configureDevice():
 				grovepi.digitalWrite(PORT_BUZZER,1)
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
-			distance = get_keypress()
+			distance = input()
 			lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
 				grovepi.digitalWrite(PORT_BUZZER,1)
 		else:
-			number = get_keypress()
+			number = input()
 			lcd.setText_norefresh("Set Phone:\n{:>3}".format(number))
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				grovepi.digitalWrite(PORT_BUZZER,1)
