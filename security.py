@@ -29,15 +29,15 @@ def get_value():
 def validateInput(type, userInput):
 	if (type == 1):
 		try:
-			if(int(input)):
-				if(int(input) <= 300 and int(input) >= 0):
+			if(int(userInput)):
+				if(int(userInput) <= 300 and int(userInput) >= 0):
 					return True
 		except: 
 			return False
 	elif(type == 2):
 		try:
-			if(int(input)):
-				if(int(input) <= 513 and int(input) >= 0):
+			if(int(userInput)):
+				if(int(userInput) <= 513 and int(userInput) >= 0):
 					return True
 		except: 
 			return False
