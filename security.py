@@ -28,8 +28,9 @@ def get_value():
 	return int(key_f)
 
 def get_keypress():
-	print(key.name)
-	return key.name
+	userInput = keyboard.record(until = 'enter')
+	print(userInput)
+	return userInput
 
 def configureDevice():
 	isConfigured = False
@@ -43,11 +44,11 @@ def configureDevice():
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
 			if(currentKey == 1):
-				keys[0] += get_keypress()
+				keys[0] = get_keypress()
 			elif(currentKey == 2):
-				keys[1] += get_keypress()
+				keys[1] = get_keypress()
 			elif(currentKey == 3):
-				keys[2] += get_keypress()
+				keys[2] = get_keypress()
 			else:
 				configState += 1
 				lcd.setText("")
@@ -56,7 +57,7 @@ def configureDevice():
 				grovepi.digitalWrite(PORT_BUZZER,1)
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
-			distance += get_keypress()
+			distance = get_keypress()
 			lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
@@ -88,40 +89,40 @@ if __name__ == '__main__':
 	if(not os.path.isfile("security_config.txt")):
 		configureDevice()
 	#import user settings
-	configFile = open("security_config.txt", "r+")
-	lines = configFile.readlines()
-	combo = [int(lines[0]), int(lines[1]), int(lines[2])]
-	distance = int(lines[3])
-	# print(combo)
-	alarm = False
-	#main loop logic
-	keys = [0,0,0]
-	currentKey = 1
-	while True:
-		if(not alarm):
-			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
-			if(measured_distance < distance -5 or measured_distance > distance + 5):
-				alarm = True
-			start = time.time()
-		else:
-			timeDiff = int(time.time()) - int(start)
-			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(timeDiff, keys[0], keys[1], keys[2]))
-			if(currentKey == 1):
-				keys[0] = get_value()
-			elif(currentKey == 2):
-				keys[1] = get_value()
-			elif(currentKey == 3):
-				keys[2] = get_value()
-			# else:
-			# 	if(validateCombo(keys, combo)):
-			# 		disarm()
-			# 	else:
-			# 		#send notification to user
-			grovepi.digitalWrite(PORT_BUZZER,1)
-			grovepi.digitalWrite(PORT_RED_LED, 1)
-			#if(timeDiff  >= 30):
-				#send sms and email
+	# configFile = open("security_config.txt", "r+")
+	# lines = configFile.readlines()
+	# combo = [int(lines[0]), int(lines[1]), int(lines[2])]
+	# distance = int(lines[3])
+	# # print(combo)
+	# alarm = False
+	# #main loop logic
+	# keys = [0,0,0]
+	# currentKey = 1
+	# while True:
+	# 	if(not alarm):
+	# 		measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
+	# 		if(measured_distance < distance -5 or measured_distance > distance + 5):
+	# 			alarm = True
+	# 		start = time.time()
+	# 	else:
+	# 		timeDiff = int(time.time()) - int(start)
+	# 		lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(timeDiff, keys[0], keys[1], keys[2]))
+	# 		if(currentKey == 1):
+	# 			keys[0] = get_value()
+	# 		elif(currentKey == 2):
+	# 			keys[1] = get_value()
+	# 		elif(currentKey == 3):
+	# 			keys[2] = get_value()
+	# 		# else:
+	# 		# 	if(validateCombo(keys, combo)):
+	# 		# 		disarm()
+	# 		# 	else:
+	# 		# 		#send notification to user
+	# 		grovepi.digitalWrite(PORT_BUZZER,1)
+	# 		grovepi.digitalWrite(PORT_RED_LED, 1)
+	# 		#if(timeDiff  >= 30):
+	# 			#send sms and email
 
-		time.sleep(0.2)
-		grovepi.digitalWrite(PORT_BUZZER,0)
-		grovepi.digitalWrite(PORT_RED_LED,0)
+	# 	time.sleep(0.2)
+	# 	grovepi.digitalWrite(PORT_BUZZER,0)
+	# 	grovepi.digitalWrite(PORT_RED_LED,0)
