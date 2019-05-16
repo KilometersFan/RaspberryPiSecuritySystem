@@ -60,6 +60,7 @@ def configureDevice():
 		grovepi.digitalWrite(PORT_BUZZER,0)
 	#write to the config file and clear display
 	lcd.setText("")
+	lcd.setRGB(0,0,0)
 	configFile = open("security_config.txt", "w+")
 	for key in keys:
 		configFile.write(str(key)+"\n")
@@ -69,6 +70,12 @@ if __name__ == '__main__':
 	#configuration setup
 	if(not os.path.isfile("security_config.txt")):
 		configureDevice()
+	#import user settings
+	configFile = open("security_config.txt", "r+")
+	lines = configFile.readLines()
+	combo = [int(lines[0], int(lines[1]), int(lines[2]))]
+	distance = int(lines[3])
+	print(lines)
 	#main loop logic
 	while True:
 		measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
