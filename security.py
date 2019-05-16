@@ -52,7 +52,7 @@ def configureDevice():
 	currentKey = 1
 	keys = ["0","0","0"]
 	distance = "0"
-	number, email, shortEmail = ""
+	number, email, shortEmail = "", "", ""
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
