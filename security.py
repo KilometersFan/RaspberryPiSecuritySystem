@@ -162,7 +162,7 @@ if __name__ == '__main__':
 			msg = "HOLD BTN 5 SEC TO DISARM"
 			lcd.setText("")
 			lcd.setText_norefresh("DEVICE DISARMED")
-			lcd.setText_norefresh(msg[index:index+15])
+			lcd.setText_norefresh("\n"+msg[index:index+15])
 			while(grovepi.digitalRead(PORT_BUTTON)):
 				count += 1
 				if(count == 25):
