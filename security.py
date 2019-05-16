@@ -154,7 +154,7 @@ if __name__ == '__main__':
 				currentKey += 1
 			grovepi.digitalWrite(PORT_BUZZER,1)
 			grovepi.digitalWrite(PORT_RED_LED,1)
-			if(timeDiff  >= 30):
+			if(timeDiff  >= 60):
 				deviceState = 4
 		elif(deviceState == 3):
 			count = 0
