@@ -52,6 +52,7 @@ def configureDevice():
 	currentKey = 1
 	keys = ["0","0","0"]
 	distance = "0"
+	number, email, shortEmail = ""
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
@@ -73,17 +74,20 @@ def configureDevice():
 				lcd.setText("")
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
+			lcd.setText_norefresh("Set Distance:\n{}".format(distance))
 			distance = input("Enter a distance value between 0 and 513: ")
 			while (not validateInput(2, distance)):
 				print("Invalid input. Distance must be between 0 and 513.")
 				distance = input("Enter a distance value between 0 and 513: ")
-			lcd.setText_norefresh("Set Distance:\n{}".format(distance))
 			configState += 1
+			lcd.setText("")
 		elif(configState == 3):
-			number = input("Enter a phone number to send sms alerts to: ")
 			lcd.setText_norefresh("Set Phone:\n{}".format(number))
+			number = input("Enter a phone number to send sms alerts to: ")
 			configState += 1
+			lcd.setText("")
 		else:
+			lcd.setText_norefresh("Set Email:\n{}".format(shortEmail))
 			email = input("Enter a gmail address to send smtp alerts to: ")
 			while (not validateInput(3, email)):
 				print("Please enter a gmail address.")
@@ -91,7 +95,7 @@ def configureDevice():
 			shortEmail = email
 			if(len(email) > 16):
 				shortEmail = shortEmail[:16]
-			lcd.setText_norefresh("Set Email:\n{}".format(shortEmail))
+			lcd.setText("")
 			isConfigured = True
 		grovepi.digitalWrite(PORT_BUZZER,1)
 		time.sleep(0.2)
