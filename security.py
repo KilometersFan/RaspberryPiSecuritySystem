@@ -81,7 +81,7 @@ if __name__ == '__main__':
 	while True:
 		if(not alarm):
 			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
-			if(measured_distance < distance -5 || measured_distance > distance + 5):
+			if(measured_distance < distance -5 or measured_distance > distance + 5):
 				alarm = True
 		else: 
 			grovepi.digitalWrite(PORT_BUZZER,1)
