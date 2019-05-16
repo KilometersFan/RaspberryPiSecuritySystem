@@ -148,13 +148,28 @@ if __name__ == '__main__':
 				if(validateCombo(keys, combo)):
 					deviceState = 3
 				else:
+					currentKey = 1
 					lcd.setRGB(255,0,0)
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
 			grovepi.digitalWrite(PORT_BUZZER,1)
 			grovepi.digitalWrite(PORT_RED_LED,1)
-			#if(timeDiff  >= 30):
-				#send sms and email
+			if(timeDiff  >= 30):
+				deviceState = 4
+		elif(deviceState == 3):
+			count = 0
+			index = 0
+			msg = "HOLD BTN 5 SEC TO DISARM"
+			lcd.setText("")
+			lcd.setText_norefresh("DEVICE DISARMED")
+			lcd.setText_norefresh(msg[index:index+15])
+			while(grovepi.digitalRead(PORT_BUTTON)):
+				count += 1
+				if(count == 25):
+					deviceState = 1
+			index += 1
+			if(index > len(msg)):
+				index  = 0
 
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
