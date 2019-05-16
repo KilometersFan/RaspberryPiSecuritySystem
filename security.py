@@ -27,6 +27,7 @@ def get_value():
 	return int(key_f)
 
 def configureDevice():
+	isConfigured = False
 	configState = 1
 	currentKey = 1
 	keys = [0,0,0]
@@ -66,7 +67,6 @@ def configureDevice():
 
 if __name__ == '__main__':
 	#configuration setup
-	isConfigured = False
 	if(not os.path.isfile("security_config.txt")):
 		configureDevice()
 	#main loop logic
