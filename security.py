@@ -72,4 +72,4 @@ if __name__ == '__main__':
 	#main loop logic
 	while True:
 		measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
-		lcd.setText_norefresh(measured_distance)
+		lcd.setText_norefresh(str(measured_distance))
