@@ -112,11 +112,11 @@ if __name__ == '__main__':
 				keys[1] = get_value()
 			elif(currentKey == 3):
 				keys[2] = get_value()
-			else:
-				if(validateCombo(keys, combo)):
-					disarm()
-				else:
-					#send notification to user
+			# else:
+			# 	if(validateCombo(keys, combo)):
+			# 		disarm()
+			# 	else:
+			# 		#send notification to user
 			grovepi.digitalWrite(PORT_BUZZER,1)
 			grovepi.digitalWrite(PORT_RED_LED, 1)
 			#if(timeDiff  >= 30):
