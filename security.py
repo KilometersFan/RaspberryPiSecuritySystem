@@ -55,7 +55,7 @@ def configureDevice():
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
 			temp = input()
-			while(!validateInput(temp)):
+			while(not validateInput(temp)):
 				print("Invalid input. Keys must be between 0 and 300")
 				temp = input()
 			if(currentKey == 1):
