@@ -78,14 +78,21 @@ if __name__ == '__main__':
 	# print(combo)
 	alarm = False
 	#main loop logic
+	
 	while True:
 		if(not alarm):
 			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
 			if(measured_distance < distance -5 or measured_distance > distance + 5):
 				alarm = True
-		else: 
+			start = time.time()
+		else:
+			timeDiff = int(time.time()) - start
+			#if(timeDiff  >= 30):
+				#do stuff
+			lcd.setText_norefresh("WARNING: {:>2} sec".format(timeDiff))
 			grovepi.digitalWrite(PORT_BUZZER,1)
 			grovepi.digitalWrite(PORT_RED_LED, 1)
+
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
 		grovepi.digitalWrite(PORT_RED_LED,0)
