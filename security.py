@@ -26,40 +26,50 @@ def get_value():
 	key_f = round(sensor_value*slope)
 	return int(key_f)
 
+def configureDevice():
+	configState = 1
+	currentKey = 1
+	keys = [0,0,0]
+	distance = 0
+	#have user create combination lock
+	while(not isConfigured):
+		if(configState == 1):
+			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
+			#Change key one by one by pressing button
+			if(currentKey == 1):
+				keys[0] = get_value()
+			elif(currentKey == 2):
+				keys[1] = get_value()
+			elif(currentKey == 3):
+				keys[2] = get_value()
+			else:
+				configState += 1
+				lcd.setText("")
+			if(grovepi.digitalRead(PORT_BUTTON)):
+				currentKey += 1
+				grovepi.digitalWrite(PORT_BUZZER,1)
+		else:
+			#set distance the device will be away from the door frame
+			distance = get_value()
+			lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
+			if(grovepi.digitalRead(PORT_BUTTON)):
+				isConfigured = True
+				grovepi.digitalWrite(PORT_BUZZER,1)
+		time.sleep(0.2)
+		grovepi.digitalWrite(PORT_BUZZER,0)
+	#write to the config file and clear display
+	lcd.setText("")
+	configFile = open("security_config.txt", "w+")
+	for key in keys:
+		configFile.write(str(key)+"\n")
+	configFile.write(str(distance) + "\n")
+
 if __name__ == '__main__':
 	#configuration setup
 	isConfigured = False
 	if(not os.path.isfile("security_config.txt")):
-		configState = 1
-		currentKey = 1
-		keys = [0,0,0]
-		distance = 0
-		#have user create combination lock
-		while(not isConfigured):
-			if(configState == 1):
-				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
-				if(currentKey == 1):
-					keys[0] = get_value()
-				elif(currentKey == 2):
-					keys[1] = get_value()
-				elif(currentKey == 3):
-					keys[2] = get_value()
-				else:
-					configState += 1
-					lcd.setText("")
-				if(grovepi.digitalRead(PORT_BUTTON)):
-					currentKey += 1
-					grovepi.digitalWrite(PORT_BUZZER,1)
-			else:
-				distance = get_value()
-				lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
-				if(grovepi.digitalRead(PORT_BUTTON)):
-					isConfigured = True
-					grovepi.digitalWrite(PORT_BUZZER,1)
-			time.sleep(0.2)
-			grovepi.digitalWrite(PORT_BUZZER,0)
-		#write to the config file
-		configFile = open("security_config.txt", "w+")
-		for key in keys:
-			configFile.write(str(key)+"\n")
-		configFile.write(str(distance) + "\n")
+		configureDevice()
+	#main loop logic
+	while True:
+		measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
+		lcd.setText_norefresh(measured_distance)
