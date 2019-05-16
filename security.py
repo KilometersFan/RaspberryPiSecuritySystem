@@ -124,6 +124,7 @@ if __name__ == '__main__':
 	distance = int(lines[3])
 	deviceState = 1
 	count = 0
+	index = 0
 	#main loop logic
 	keys = [0,0,0]
 	currentKey = 1
