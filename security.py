@@ -44,11 +44,11 @@ def configureDevice():
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
 			if(currentKey == 1):
-				keys[0] = keyboard.get_typed_strings(keyboard.record(until = 'Esc'))
+				keys[0] = keyboard.get_typed_strings(keyboard.record(until = 'Space'))
 			elif(currentKey == 2):
-				keys[1] = keyboard.get_typed_strings(keyboard.record(until = 'Esc'))
+				keys[1] = keyboard.get_typed_strings(keyboard.record(until = 'Space'))
 			elif(currentKey == 3):
-				keys[2] = keyboard.get_typed_strings(keyboard.record(until = 'Esc'))
+				keys[2] = keyboard.get_typed_strings(keyboard.record(until = 'Space'))
 			else:
 				configState += 1
 				lcd.setText("")
