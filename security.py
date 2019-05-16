@@ -161,7 +161,6 @@ if __name__ == '__main__':
 				lcd.setText("")
 		elif(deviceState == 3):
 			count = 0
-			index = 0
 			msg = "HOLD BTN 5 SEC TO ARM"
 			end = min(index + 15, len(msg)-1)
 			lcd.setText_norefresh("DEVICE DISARMED")
