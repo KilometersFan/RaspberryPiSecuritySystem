@@ -73,7 +73,7 @@ if __name__ == '__main__':
 	#import user settings
 	configFile = open("security_config.txt", "r+")
 	lines = configFile.readlines()
-	combo = [int(lines[0], int(lines[1]), int(lines[2]))]
+	combo = [int(lines[0]), int(lines[1]), int(lines[2])]
 	distance = int(lines[3])
 	print(lines)
 	#main loop logic
