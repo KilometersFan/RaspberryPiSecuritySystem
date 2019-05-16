@@ -123,6 +123,7 @@ if __name__ == '__main__':
 	combo = [int(lines[0]), int(lines[1]), int(lines[2])]
 	distance = int(lines[3])
 	deviceState = 1
+	count = 0
 	#main loop logic
 	keys = [0,0,0]
 	currentKey = 1
@@ -161,9 +162,10 @@ if __name__ == '__main__':
 		elif(deviceState == 3):
 			count = 0
 			index = 0
-			msg = "HOLD BTN 5 SEC TO DISARM"
+			msg = "HOLD BTN 5 SEC TO ARM"
 			end = min(index + 15, len(msg)-1)
 			lcd.setText_norefresh("DEVICE DISARMED")
+			print(msg[index:end])
 			lcd.setText_norefresh("\n"+msg[index:end])
 			while(grovepi.digitalRead(PORT_BUTTON)):
 				count += 1
