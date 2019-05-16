@@ -50,7 +50,7 @@ def configureDevice():
 				configState += 1
 				lcd.setText("")
 			# if(grovepi.digitalRead(PORT_BUTTON)):
-				currentKey += 1
+			currentKey += 1
 				# grovepi.digitalWrite(PORT_BUZZER,1)
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
