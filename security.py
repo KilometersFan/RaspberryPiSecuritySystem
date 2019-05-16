@@ -28,7 +28,7 @@ def get_value():
 	return int(key_f)
 
 def get_keypress():
-	userInput = keyboard.record(until = 'enter')
+	userInput = keyboard.record(until = 'Esc')
 	print("recorded!")
 	return str(userInput)
 
@@ -36,19 +36,19 @@ def configureDevice():
 	isConfigured = False
 	configState = 1
 	currentKey = 1
-	keys = ["","",""]
-	distance = ""
+	keys = ["0","0","0"]
+	distance = "0"
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
 			if(currentKey == 1):
-				keys[0] = get_keypress()
+				keys[0] = keyboard.get_typed_strings(record())
 			elif(currentKey == 2):
-				keys[1] = get_keypress()
+				keys[1] = keyboard.get_typed_strings(record())
 			elif(currentKey == 3):
-				keys[2] = get_keypress()
+				keys[2] = keyboard.get_typed_strings(record())
 			else:
 				configState += 1
 				lcd.setText("")
