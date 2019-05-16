@@ -1,6 +1,6 @@
 import sys
 import time
-# import keyboard
+import keyboard
 import os.path
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
@@ -35,19 +35,19 @@ def configureDevice():
 	isConfigured = False
 	configState = 1
 	currentKey = 1
-	keys = [0,0,0]
-	distance = 0
+	keys = ["","",""]
+	distance = ""
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
 			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
 			if(currentKey == 1):
-				keys[0] = int(raw_input())
+				keys[0] += get_keypress()
 			elif(currentKey == 2):
-				keys[1] = int(raw_input())
+				keys[1] += get_keypress()
 			elif(currentKey == 3):
-				keys[2] = int(raw_input())
+				keys[2] += get_keypress()
 			else:
 				configState += 1
 				lcd.setText("")
@@ -56,13 +56,13 @@ def configureDevice():
 				grovepi.digitalWrite(PORT_BUZZER,1)
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
-			distance = int(raw_input())
+			distance += get_keypress()
 			lcd.setText_norefresh("Set Distance:\n{:>3}".format(distance))
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
 				grovepi.digitalWrite(PORT_BUZZER,1)
 		else:
-			number = raw_input()
+			number = get_keypress()
 			lcd.setText_norefresh("Set Phone:\n{:>3}".format(number))
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				grovepi.digitalWrite(PORT_BUZZER,1)
