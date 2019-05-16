@@ -86,7 +86,7 @@ if __name__ == '__main__':
 				alarm = True
 			start = time.time()
 		else:
-			timeDiff = int(time.time()) - start
+			timeDiff = int(time.time()) - int(start)
 			print(timeDiff)
 			#if(timeDiff  >= 30):
 				#do stuff
