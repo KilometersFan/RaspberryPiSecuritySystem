@@ -1,6 +1,6 @@
 import sys
 import time
-import keyboard
+# import keyboard
 import os.path
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
