@@ -75,7 +75,7 @@ if __name__ == '__main__':
 	lines = configFile.readlines()
 	combo = [int(lines[0]), int(lines[1]), int(lines[2])]
 	distance = int(lines[3])
-	print(lines)
+	print(combo)
 	#main loop logic
 	while True:
 		measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
