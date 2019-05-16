@@ -147,6 +147,7 @@ if __name__ == '__main__':
 			else:
 				if(validateCombo(keys, combo)):
 					deviceState = 3
+					lcd.setText("")
 				else:
 					currentKey = 1
 					lcd.setRGB(255,0,0)
@@ -156,11 +157,11 @@ if __name__ == '__main__':
 			grovepi.digitalWrite(PORT_RED_LED,1)
 			if(timeDiff  >= 60):
 				deviceState = 4
+				lcd.setText("")
 		elif(deviceState == 3):
 			count = 0
 			index = 0
 			msg = "HOLD BTN 5 SEC TO DISARM"
-			lcd.setText("")
 			lcd.setText_norefresh("DEVICE DISARMED")
 			lcd.setText_norefresh("\n"+msg[index:index+15])
 			while(grovepi.digitalRead(PORT_BUTTON)):
