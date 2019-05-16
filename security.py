@@ -1,6 +1,5 @@
 import sys
 import time
-import keyboard
 import os.path
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
@@ -27,11 +26,6 @@ def get_value():
 	key_f = round(sensor_value*slope)
 	return int(key_f)
 
-def get_keypress():
-	userInput = keyboard.record(until = 'Esc')
-	print("recorded!")
-	return str(userInput)
-
 def configureDevice():
 	isConfigured = False
 	configState = 1
@@ -47,15 +41,17 @@ def configureDevice():
 				print(1)
 				keys[0] = input()
 			elif(currentKey == 2):
+				print(2)
 				keys[1] = input()
 			elif(currentKey == 3):
+				print(3)
 				keys[2] = input()
 			else:
 				configState += 1
 				lcd.setText("")
-			if(grovepi.digitalRead(PORT_BUTTON)):
+			# if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
-				grovepi.digitalWrite(PORT_BUZZER,1)
+				# grovepi.digitalWrite(PORT_BUZZER,1)
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
 			distance = input()
