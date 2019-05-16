@@ -42,8 +42,8 @@ def validateInput(type, userInput):
 		except: 
 			return False
 	elif(type == 3):
-		if("@gmail.com" not in userInput):
-			return False
+		if("@gmail.com" in userInput):
+			return True
 	return False		
 
 def configureDevice():
