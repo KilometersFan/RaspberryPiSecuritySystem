@@ -4,6 +4,8 @@ import os.path
 sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
 import grove_rgb_lcd as lcd
+import smtplib
+from twilio.rest import Client
 
 PORT_BUTTON = 3
 PORT_BUZZER = 4
@@ -11,6 +13,9 @@ PORT_ROTARY = 2
 PORT_RANGE = 7
 PORT_RED_LED = 5
 PORT_GREEN_LED = 6 
+
+account_ssid = 'AC32c39154f82d33309f2001ef3614fd57'
+auth_token = 'aae9133897aa28f2b6246cdeb25a130c'
 
 grovepi.pinMode(PORT_BUZZER, "OUTPUT")
 grovepi.pinMode(PORT_BUTTON, "INPUT")
@@ -122,6 +127,8 @@ if __name__ == '__main__':
 	lines = configFile.readlines()
 	combo = [int(lines[0]), int(lines[1]), int(lines[2])]
 	distance = int(lines[3])
+	number = lines[4]
+	email = lines[5]
 	deviceState = 1
 	count = 0
 	index = 0
@@ -160,6 +167,11 @@ if __name__ == '__main__':
 			grovepi.digitalWrite(PORT_RED_LED,1)
 			if(timeDiff  >= 60):
 				lcd.setRGB(255,0,0)
+				client = Client(account_ssid, auth_token)
+				message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
+				# s = smtplib.SMTP('smtp.gmail.com', 587)
+				# s.starttls()
+				# s.login()
 				deviceState = 4
 				keys = ["_","_","_"]
 				lcd.setText("")
@@ -182,11 +194,11 @@ if __name__ == '__main__':
 			else:
 				if(validateCombo(keys, combo)):
 					deviceState = 3
+					lcd.setRGB(255,255,255)
 					lcd.setText("")
 					keys = ["_","_","_"]
 				else:
 					currentKey = 1
-					lcd.setRGB(255,0,0)
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
 			index += 1
