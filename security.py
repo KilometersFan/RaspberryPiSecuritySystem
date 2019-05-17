@@ -126,7 +126,7 @@ if __name__ == '__main__':
 	count = 0
 	index = 0
 	#main loop logic
-	keys = [0,0,0]
+	keys = ["_","_","_"]
 	currentKey = 1
 	lcd.setRGB(0,0,0)
 	while True:
@@ -135,6 +135,7 @@ if __name__ == '__main__':
 			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
 			if(measured_distance < distance -5 or measured_distance > distance + 5):
 				deviceState = 2
+				lcd.setText("")
 				start = time.time()
 		elif(deviceState == 2):
 			lcd.setRGB(255,255,255)
@@ -160,18 +161,18 @@ if __name__ == '__main__':
 			if(timeDiff  >= 60):
 				lcd.setRGB(255,0,0)
 				deviceState = 4
-				keys = [0,0,0]
+				keys = ["_","_","_"]
 				lcd.setText("")
 		elif(deviceState == 3):
 			lcd.setText_norefresh("DEVICE DISARMED\nPRESS BTN TO ARM")
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				deviceState = 1
-				keys[0],keys[1], keys[2] = 0,0,0
+				keys = ["_","_","_"]
+				lcd.setText("")
 		elif(deviceState == 4):
 			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE"
 			end = min(index+15, len(msg))
-			lcd.setText_norefresh(msg[index:end])
-			lcd.setText_norefresh("\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
+			lcd.setText_norefresh(msg[index:end]+"\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):
@@ -182,6 +183,7 @@ if __name__ == '__main__':
 				if(validateCombo(keys, combo)):
 					deviceState = 3
 					lcd.setText("")
+					keys = ["_","_","_"]
 				else:
 					currentKey = 1
 					lcd.setRGB(255,0,0)
