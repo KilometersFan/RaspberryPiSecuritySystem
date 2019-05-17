@@ -135,7 +135,7 @@ if __name__ == '__main__':
 			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
 			if(measured_distance < distance -5 or measured_distance > distance + 5):
 				deviceState = 2
-			start = time.time()
+				start = time.time()
 		elif(deviceState == 2):
 			lcd.setRGB(255,255,255)
 			timeDiff = int(time.time()) - int(start)
@@ -166,6 +166,7 @@ if __name__ == '__main__':
 			lcd.setText_norefresh("DEVICE DISARMED\nPRESS BTN TO ARM")
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				deviceState = 1
+				keys[0],keys[1], keys[2] = 0,0,0
 		elif(deviceState == 4):
 			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE"
 			end = min(index+15, len(msg))
