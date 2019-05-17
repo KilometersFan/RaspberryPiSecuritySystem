@@ -139,7 +139,7 @@ if __name__ == '__main__':
 		elif(deviceState == 2):
 			lcd.setRGB(255,255,255)
 			timeDiff = int(time.time()) - int(start)
-			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(timeDiff, keys[0], keys[1], keys[2]))
+			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):
@@ -158,23 +158,38 @@ if __name__ == '__main__':
 			grovepi.digitalWrite(PORT_BUZZER,1)
 			grovepi.digitalWrite(PORT_RED_LED,1)
 			if(timeDiff  >= 60):
+				lcd.setRGB(255,0,0)
 				deviceState = 4
+				keys = [0,0,0]
 				lcd.setText("")
 		elif(deviceState == 3):
-			count = 0
-			msg = "HOLD BTN 5 SEC TO ARM"
-			end = min(index + 15, len(msg)-1)
-			lcd.setText_norefresh("DEVICE DISARMED")
-			print(msg[index:end])
-			lcd.setText_norefresh("\n"+msg[index:end])
-			while(grovepi.digitalRead(PORT_BUTTON)):
-				count += 1
-				time.sleep(0.2)
-				if(count >= 25):
-					deviceState = 1
+			lcd.setText_norefresh("DEVICE DISARMED\nPRESS BTN TO ARM")
+			if(grovepi.digitalRead(PORT_BUTTON)):
+				deviceState = 1
+		elif(deviceState == 4):
+			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE"
+			end = min(index+15, len(msg))
+			lcd.setText_norefresh(msg[index:end])
+			lcd.setText_norefresh("\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
+			if(currentKey == 1):
+				keys[0] = get_value()
+			elif(currentKey == 2):
+				keys[1] = get_value()
+			elif(currentKey == 3):
+				keys[2] = get_value()
+			else:
+				if(validateCombo(keys, combo)):
+					deviceState = 3
+					lcd.setText("")
+				else:
+					currentKey = 1
+					lcd.setRGB(255,0,0)
+			if(grovepi.digitalRead(PORT_BUTTON)):
+				currentKey += 1
 			index += 1
 			if(index > len(msg)-1):
 				index = 0
+
 
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
