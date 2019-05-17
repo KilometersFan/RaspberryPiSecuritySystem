@@ -14,8 +14,8 @@ PORT_RANGE = 7
 PORT_RED_LED = 5
 PORT_GREEN_LED = 6 
 
-account_ssid = 'AC32c39154f82d33309f2001ef3614fd57'
-auth_token = 'aae9133897aa28f2b6246cdeb25a130c'
+account_ssid = 'XXXXX'
+auth_token = 'XXXXX'
 
 grovepi.pinMode(PORT_BUZZER, "OUTPUT")
 grovepi.pinMode(PORT_BUTTON, "INPUT")
