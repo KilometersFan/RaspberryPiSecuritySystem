@@ -205,7 +205,7 @@ if __name__ == '__main__':
 			if(grovepi.digitalRead(PORT_BUTTON)):
 				currentKey += 1
 			index += 1
-			if(index > len(msg)-1):
+			if(index > len(msg)-16):
 				index = 0
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
