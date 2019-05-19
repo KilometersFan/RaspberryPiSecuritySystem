@@ -173,7 +173,7 @@ if __name__ == '__main__':
 				s.starttls()
 				s.login("rpimotionalarmdevice", "")
 				message = "Your alarm has been triggered!"
-				s.sendmail("rpimotionalarmdevice", "", message)
+				s.sendmail("rpimotionalarmdevice", email, message)
 				s.quit()
 				deviceState = 4
 				keys = ["_","_","_"]
@@ -186,8 +186,9 @@ if __name__ == '__main__':
 				lcd.setText("")
 		elif(deviceState == 4):
 			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE"
-			end = min(index+15, len(msg)-1)
-			lcd.setText_norefresh(msg[index:end]+"\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
+			end = min(index+15, len(msg))
+			lcd.setText(msg[index:end])
+			lcd.setText_norefresh("\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):
