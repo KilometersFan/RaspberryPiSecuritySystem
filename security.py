@@ -185,10 +185,9 @@ if __name__ == '__main__':
 				keys = ["_","_","_"]
 				lcd.setText("")
 		elif(deviceState == 4):
-			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE"
+			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE                "
 			end = min(index+15, len(msg))
-			lcd.setText(msg[index:end])
-			lcd.setText_norefresh("\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
+			lcd.setText_norefresh(msg[index:end]+"\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):
