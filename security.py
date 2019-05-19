@@ -186,7 +186,7 @@ if __name__ == '__main__':
 				lcd.setText("")
 		elif(deviceState == 4):
 			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE"
-			end = min(index+15, len(msg))
+			end = min(index+15, len(msg)-1)
 			lcd.setText_norefresh(msg[index:end]+"\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			if(currentKey == 1):
 				keys[0] = get_value()
@@ -207,8 +207,6 @@ if __name__ == '__main__':
 			index += 1
 			if(index > len(msg)-1):
 				index = 0
-
-
 		time.sleep(0.2)
 		grovepi.digitalWrite(PORT_BUZZER,0)
 		grovepi.digitalWrite(PORT_RED_LED,0)
