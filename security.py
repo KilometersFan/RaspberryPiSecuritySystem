@@ -187,7 +187,13 @@ if __name__ == '__main__':
 			if(option == 1):
 				msg_option = "ARM                "
 			elif(option == 2):
-				msg_option = "CHANGE CONFIG                "
+				msg_option = "CHANGE COMBO                "
+			elif(option == 3):
+				msg_option = "CHANGE DISTANCE                "
+			elif(option == 4):
+				msg_option = "CHANGE NUMBER                "
+			elif(option == 5):
+				msg_option = "CHANGE EMAIL                "
 			msg = "PRESS BTN TO "+ msg_option
 			end = min(index+15, len(msg))
 			lcd.setText_norefresh("DEVICE DISARMED\n"+msg[index:end])
@@ -195,8 +201,8 @@ if __name__ == '__main__':
 				deviceState = 1
 				keys = ["_","_","_"]
 				lcd.setText("")
-			elif(grovepi.digitalRead(PORT_BUTTON) and option == 2):
-				configureDevice(combo, distance, number, email)
+			elif(grovepi.digitalRead(PORT_BUTTON) and option > 1):
+				configureDevice(combo, distance, number, email, option)
 				lcd.setRGB(255,255,255)
 			index += 1
 			if(index > len(msg)-16):
