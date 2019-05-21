@@ -178,6 +178,7 @@ if __name__ == '__main__':
 				lcd.setText("")
 		elif(deviceState == 3):
 			msg_option = ""
+			option = get_value(2)
 			if(option == 1):
 				msg_option = "ARM                "
 			elif(option == 2):
