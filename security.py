@@ -204,6 +204,12 @@ if __name__ == '__main__':
 				lcd.setText("")
 			elif(grovepi.digitalRead(PORT_BUTTON) and option > 1):
 				configureDevice(combo, distance, number, email, option)
+				configFile = open("security_config.txt", "r+")
+				lines = configFile.readlines()
+				combo = [int(lines[0]), int(lines[1]), int(lines[2])]
+				distance = int(lines[3])
+				number = lines[4]
+				email = lines[5]
 				lcd.setRGB(255,255,255)
 			index += 1
 			if(index > len(msg)-16):
