@@ -50,49 +50,54 @@ def validateInput(type, userInput):
 			return True
 	return False		
 
-def configureDevice(keys=["0","0","0"], distance="0", number="", email=""):
+def configureDevice(keys=["0","0","0"], distance="0", number="", email="", option=0):
 	isConfigured = False
 	configState = 1
 	currentKey = 1
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
-			lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 			#Change key one by one by pressing button
-			temp = input("Enter a key value between 0 and 300: ")
-			while(not validateInput(1, temp) and currentKey <= 4):
-				print("Invalid input. Keys must be between 0 and 300.")
+			if(option == 0 or option == 1):
+				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 				temp = input("Enter a key value between 0 and 300: ")
-			if(currentKey == 1):
-				keys[0] = temp
-			elif(currentKey == 2):
-				keys[1] = temp
-			elif(currentKey == 3):
-				keys[2] = temp
+				while(not validateInput(1, temp) and currentKey <= 4 and (option == 0 or option == 1)):
+					print("Invalid input. Keys must be between 0 and 300.")
+					temp = input("Enter a key value between 0 and 300: ")
+				if(currentKey == 1):
+					keys[0] = temp
+				elif(currentKey == 2):
+					keys[1] = temp
+				elif(currentKey == 3):
+					keys[2] = temp
 			currentKey += 1
-			if(currentKey > 3):
+			if(currentKey > 3 or option != 0 and option != 1):
 				configState += 1
 				lcd.setText("")
+
 		elif(configState == 2):
 			#set distance the device will be away from the door frame
-			lcd.setText_norefresh("Set Distance:\n{}".format(distance))
-			distance = input("Enter a distance value between 0 and 513: ")
-			while (not validateInput(2, distance)):
+			if(option == 0 or option == 2):
+				lcd.setText_norefresh("Set Distance:\n{}".format(distance))
+				distance = input("Enter a distance value between 0 and 513: ")
+			while (not validateInput(2, distance) and (option == 0 or option == 2)):
 				print("Invalid input. Distance must be between 0 and 513.")
 				distance = input("Enter a distance value between 0 and 513: ")
 			configState += 1
 			lcd.setText("")
 		elif(configState == 3):
-			lcd.setText_norefresh("Set Phone:\n{}".format(number))
-			number = input("Enter a phone number to send sms alerts to: ")
+			if(option == 0 or option == 3):
+				lcd.setText_norefresh("Set Phone:\n{}".format(number))
+				number = input("Enter a phone number to send sms alerts to: ")
 			configState += 1
 			lcd.setText("")
 		else:
-			lcd.setText_norefresh("Set Email:\n{}".format(email))
-			email = input("Enter a gmail address to send smtp alerts to: ")
-			while (not validateInput(3, email)):
-				print("Please enter a gmail address.")
+			if(option == 0 or option == 4):
+				lcd.setText_norefresh("Set Email:\n{}".format(email))
 				email = input("Enter a gmail address to send smtp alerts to: ")
+				while (not validateInput(3, email)):
+					print("Please enter a gmail address.")
+					email = input("Enter a gmail address to send smtp alerts to: ")
 			lcd.setText("")
 			isConfigured = True
 		grovepi.digitalWrite(PORT_BUZZER,1)
@@ -186,12 +191,13 @@ if __name__ == '__main__':
 			msg = "PRESS BTN TO "+ msg_option
 			end = min(index+15, len(msg))
 			lcd.setText_norefresh("DEVICE DISARMED\n"+msg[index:end])
-			if(grovepi.digitalRead(PORT_BUTTON) and option == 1):
+			if(grovepi.digitalRead(PORT_BUTTON) and option <= 1):
 				deviceState = 1
 				keys = ["_","_","_"]
 				lcd.setText("")
 			elif(grovepi.digitalRead(PORT_BUTTON) and option == 2):
 				configureDevice(combo, distance, number, email)
+				lcd.setRGB(255,255,255)
 			index += 1
 			if(index > len(msg)-16):
 				index = 0
