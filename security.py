@@ -107,12 +107,12 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 	#write to the config file and clear display
 	lcd.setText("")
 	lcd.setRGB(0,0,0)
-	configFile = open("security_config.txt", "w")
+	configFile = open("security_config.txt", "w+")
 	for key in keys:
 		configFile.write(str(key) +"\n")
-	configFile.write(str(distance) + "\n")
-	configFile.write(str(number) + "\n")
-	configFile.write(str(email) + "\n")
+	configFile.write(str(distance.rstrip()) + "\n")
+	configFile.write(str(number.rstrip()) + "\n")
+	configFile.write(str(email.rstrip()) + "\n")
 	configFile.close()
 def validateCombo(userKeys, keys):
 	for i in range(3):
