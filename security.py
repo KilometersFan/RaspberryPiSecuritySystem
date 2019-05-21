@@ -184,7 +184,7 @@ if __name__ == '__main__':
 		elif(deviceState == 3):
 			msg_option = ""
 			option = get_value(5)
-			if(option == 1):
+			if(option <= 1):
 				msg_option = "ARM                "
 			elif(option == 2):
 				msg_option = "CHANGE COMBO                "
