@@ -24,10 +24,9 @@ grovepi.pinMode(PORT_RED_LED, "OUTPUT")
 grovepi.pinMode(PORT_GREEN_LED, "OUTPUT")
 lcd.setRGB(255,255,255)
 
-def get_value():
+def get_value(max=300):
 	sensor_value = grovepi.analogRead(PORT_ROTARY)
-	key_f = 0
-	slope = 300/1023
+	slope = max/1023
 	key_f = round(sensor_value*slope)
 	return int(key_f)
 
@@ -51,13 +50,10 @@ def validateInput(type, userInput):
 			return True
 	return False		
 
-def configureDevice():
+def configureDevice(keys=["0","0","0"], distance="0", number="", email=""):
 	isConfigured = False
 	configState = 1
 	currentKey = 1
-	keys = ["0","0","0"]
-	distance = "0"
-	number, email = "", ""
 	#have user create combination lock
 	while(not isConfigured):
 		if(configState == 1):
@@ -111,7 +107,7 @@ def configureDevice():
 	configFile.write(str(distance) + "\n")
 	configFile.write(str(number) + "\n")
 	configFile.write(str(email) + "\n")
-
+		
 def validateCombo(userKeys, keys):
 	for i in range(3):
 		if(userKeys[i] != keys[i]):
@@ -132,6 +128,7 @@ if __name__ == '__main__':
 	deviceState = 1
 	count = 0
 	index = 0
+	option = 1
 	#main loop logic
 	keys = ["_","_","_"]
 	currentKey = 1
@@ -157,6 +154,7 @@ if __name__ == '__main__':
 			else:
 				if(validateCombo(keys, combo)):
 					deviceState = 3
+					index = 0
 					lcd.setText("")
 				else:
 					currentKey = 1
@@ -179,11 +177,23 @@ if __name__ == '__main__':
 				keys = ["_","_","_"]
 				lcd.setText("")
 		elif(deviceState == 3):
-			lcd.setText_norefresh("DEVICE DISARMED\nPRESS BTN TO ARM")
-			if(grovepi.digitalRead(PORT_BUTTON)):
+			msg_option = ""
+			if(option == 1):
+				msg_option = "ARM                "
+			elif(option == 2):
+				msg_option = "CHANGE CONFIG                "
+			msg = "PRESS BTN TO "+ msg_option
+			end = min(index+15, len(msg))
+			lcd.setText_norefresh("DEVICE DISARMED\n"+msg[index:end])
+			if(grovepi.digitalRead(PORT_BUTTON) and option == 1):
 				deviceState = 1
 				keys = ["_","_","_"]
 				lcd.setText("")
+			elif(grovepi.digitalRead(PORT_BUTTON) and option == 2):
+				configureDevice(combo, distance, number, email)
+			index += 1
+			if(index > len(msg)-16):
+				index = 0
 		elif(deviceState == 4):
 			msg = "NOTIFIED OWNER, ENTER COMBO TO RESET DEVICE                "
 			end = min(index+15, len(msg))
