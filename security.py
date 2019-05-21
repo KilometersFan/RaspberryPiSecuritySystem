@@ -121,9 +121,15 @@ def validateCombo(userKeys, keys):
 	return True
 
 if __name__ == '__main__':
+	#device info
+	deviceState = 1
+	count = 0
+	index = 0
+	option = 1
 	#configuration setup
 	if(not os.path.isfile("security_config.txt")):
 		configureDevice()
+		deviceState = 3
 	#import user settings
 	configFile = open("security_config.txt", "r+")
 	lines = configFile.readlines()
@@ -131,10 +137,6 @@ if __name__ == '__main__':
 	distance = int(lines[3])
 	number = lines[4]
 	email = lines[5]
-	deviceState = 1
-	count = 0
-	index = 0
-	option = 1
 	#main loop logic
 	keys = ["_","_","_"]
 	currentKey = 1
