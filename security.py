@@ -61,7 +61,7 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 			if(option == 0 or option == 2):
 				lcd.setText_norefresh("Set Combination:\n{:>3} {:>3} {:>3}".format(keys[0], keys[1], keys[2]))
 				temp = input("Enter a key value between 0 and 300: ")
-				while(not validateInput(1, temp) and currentKey <= 4 and (option == 0 or option == 1)):
+				while(not validateInput(1, temp) and currentKey <= 4):
 					print("Invalid input. Keys must be between 0 and 300.")
 					temp = input("Enter a key value between 0 and 300: ")
 				if(currentKey == 1):
@@ -80,9 +80,9 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 			if(option == 0 or option == 3):
 				lcd.setText_norefresh("Set Distance:\n{}".format(distance))
 				distance = input("Enter a distance value between 0 and 513: ")
-			while (not validateInput(2, distance) and (option == 0 or option == 3)):
-				print("Invalid input. Distance must be between 0 and 513.")
-				distance = input("Enter a distance value between 0 and 513: ")
+				while (not validateInput(2, distance)):
+					print("Invalid input. Distance must be between 0 and 513.")
+					distance = input("Enter a distance value between 0 and 513: ")
 			configState += 1
 			lcd.setText("")
 		elif(configState == 3):
@@ -113,7 +113,7 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 	configFile.write(str(distance) + "\n")
 	configFile.write(str(number) + "\n")
 	configFile.write(str(email) + "\n")
-		
+	configFile.close()
 def validateCombo(userKeys, keys):
 	for i in range(3):
 		if(userKeys[i] != keys[i]):
