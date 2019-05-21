@@ -106,7 +106,8 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 	#write to the config file and clear display
 	lcd.setText("")
 	lcd.setRGB(0,0,0)
-	configFile = open("security_config.txt", "w+")
+	configFile = open("security_config.txt", "w")
+	configFile.truncate(0)
 	for key in keys:
 		configFile.write(str(key) +"\n")
 	configFile.write(str(distance) + "\n")
