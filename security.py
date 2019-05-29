@@ -186,9 +186,9 @@ if __name__ == '__main__':
 			lcd.setRGB(255,255,255)
 			timeDiff = int(time.time()) - int(start)
 			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
-			if(not alarm_sent):
-				send_alarm()
-				alarm_sent = True
+			# if(not alarm_sent):
+			# 	send_alarm()
+			# 	alarm_sent = True
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):

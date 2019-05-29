@@ -14,17 +14,15 @@ auth_token = ''
 
 app = Flask('Raspberry Pi Security System')
 start = 0
-email = ""
-number = ""
 loop = asyncio.get_event_loop()
 
 @app.route('/configure', methods=['POST'])
 def configure():
+	configFile = open('server_config.txt', 'w+')
 	payload = request.get_json()
-	global email
-	email = payload['email']
-	global number
-	number = payload['number']
+	configFile.write(email.rstrip())
+	configFile.write(number.rstrip())
+	configFile.close()
 	print("email: " + email)
 	print("number: " + number)
 	return 'Ok'
@@ -49,6 +47,10 @@ def disarm_callback():
 	return 'Ok'
 
 async def counter():
+	configFile = open('server_config.txt', 'r+')
+	lines = configFile.readLines()
+	email = lines[0]
+	number = lines[1]
 	end = time.time()
 	global start 
 	global email
