@@ -19,7 +19,7 @@ PORT_GREEN_LED = 6
 account_ssid = 'AC32c39154f82d33309f2001ef3614fd57'
 auth_token = ''
 
-ADDRESS = 'pi@192.168.1.113:4250'
+ADDRESS = 'localhost:4250'
 
 grovepi.pinMode(PORT_BUZZER, "OUTPUT")
 grovepi.pinMode(PORT_BUTTON, "INPUT")
