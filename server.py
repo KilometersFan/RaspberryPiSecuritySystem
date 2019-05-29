@@ -25,6 +25,7 @@ def configure():
 	email = payload['email']
 	global number
 	number = payload['number']
+	return 'Ok'
 
 @app.route('/alarm_triggered', methods=['POST'])
 def alarm_triggered_callback():

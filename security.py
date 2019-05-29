@@ -172,7 +172,6 @@ if __name__ == '__main__':
 	#main loop logic
 	keys = ["_","_","_"]
 	currentKey = 1
-	lcd.setRGB(0,0,0)
 	alarm_sent = False
 	disarm_sent = False
 	while True:
