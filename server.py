@@ -29,8 +29,8 @@ def alarm_triggered_callback():
 	payload = request.get_json()
 	print("Alarm triggered at: " + str(payload['time']))
 	start = time.time()
-	# loop = asyncio.get_event_loop()
-	# loop.run_until_complete(counter())
+	loop = asyncio.get_event_loop()
+	loop.run_until_complete(counter())
 	return 'Ok'
 
 @app.route('/disarm', methods=['POST'])
