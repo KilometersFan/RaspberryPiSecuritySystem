@@ -70,7 +70,7 @@ def send_alarm():
 		'Authorization': None   # not using HTTP secure
 	}
 	payload = {
-		'time' : time.time()
+		'time' : str(time.time())
 	}
 	requests.post("http://{}/alarm_triggered".format(ADDRESS), headers=headers, data=json.dumps(payload))
 def send_disarm():
@@ -79,7 +79,7 @@ def send_disarm():
 		'Authorization': None   # not using HTTP secure
 	}
 	payload = {
-		'time' : time.time()
+		'time' : str(time.time())
 	}
 	requests.post("http://{}/disarm".format(ADDRESS), headers=headers, data=json.dumps(payload))
 def configureDevice(keys=["0","0","0"], distance="0", number="", email="", option=0):
