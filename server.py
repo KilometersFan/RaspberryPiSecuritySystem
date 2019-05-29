@@ -31,12 +31,14 @@ def alarm_triggered_callback():
 	start = time.time()
 	# loop = asyncio.get_event_loop()
 	# loop.run_until_complete(counter())
+	return 'Ok'
 
 @app.route('/disarm', methods=['POST'])
 def disarm_callback(time):
 	payload = request.get_json()
 	print("Alarm triggered at: " + str(payload['time']))
 	start = 0
+	return 'Ok'
 
 async def counter():
 	end = time.time()
