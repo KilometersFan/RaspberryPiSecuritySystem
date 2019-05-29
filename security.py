@@ -173,6 +173,8 @@ if __name__ == '__main__':
 	keys = ["_","_","_"]
 	currentKey = 1
 	lcd.setRGB(0,0,0)
+	alarm_sent = False
+	disarm_sent = False
 	while True:
 		if(deviceState == 1):
 			grovepi.digitalWrite(PORT_GREEN_LED,1)
@@ -185,7 +187,8 @@ if __name__ == '__main__':
 			lcd.setRGB(255,255,255)
 			timeDiff = int(time.time()) - int(start)
 			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
-			send_alarm()
+			if(not alarm_sent):
+				send_alarm()
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):
@@ -214,12 +217,13 @@ if __name__ == '__main__':
 				message = "Your alarm has been triggered!"
 				s.sendmail("rpimotionalarmdevice", email, message)
 				s.quit()
-
+				alarm_sent = False
 				deviceState = 4
 				keys = ["_","_","_"]
 				lcd.setText("")
 		elif(deviceState == 3):
-			send_disarm()
+			if(not disarm_sent):
+				send_disarm()
 			msg_option = ""
 			option = get_value(5)
 			if(option <= 1):
@@ -239,6 +243,7 @@ if __name__ == '__main__':
 				deviceState = 1
 				keys = ["_","_","_"]
 				lcd.setText("")
+				disarm_sent = False
 			elif(grovepi.digitalRead(PORT_BUTTON) and option > 1):
 				configureDevice(combo, distance, number, email, option)
 				configFile = open("security_config.txt", "r+")
