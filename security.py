@@ -5,6 +5,8 @@ sys.path.append('/home/pi/Dexter/GrovePi/Software/Python')
 import grovepi
 import grove_rgb_lcd as lcd
 import smtplib
+import json
+import requests
 from twilio.rest import Client
 
 PORT_BUTTON = 3
@@ -16,6 +18,8 @@ PORT_GREEN_LED = 6
 
 account_ssid = 'AC32c39154f82d33309f2001ef3614fd57'
 auth_token = ''
+
+ADDRESS = 'pi@192.168.1.113:4250'
 
 grovepi.pinMode(PORT_BUZZER, "OUTPUT")
 grovepi.pinMode(PORT_BUTTON, "INPUT")
@@ -50,6 +54,34 @@ def validateInput(type, userInput):
 			return True
 	return False		
 
+def send_config(email, number):
+	headers = {
+		'Content-Type': 'application/json',
+		'Authorization': None   # not using HTTP secure
+	}
+	payload = {
+		'email': email,
+		'number' : number
+	}
+	requests.post("http://{}/configure".format(ADDRESS), headers=headers, data=json.dumps(payload))
+def send_alarm():
+	headers = {
+		'Content-Type': 'application/json',
+		'Authorization': None   # not using HTTP secure
+	}
+	payload = {
+		'time' : time.time()
+	}
+	requests.post("http://{}/alarm_triggered".format(ADDRESS), headers=headers, data=json.dumps(payload))
+def send_disarm():
+	headers = {
+		'Content-Type': 'application/json',
+		'Authorization': None   # not using HTTP secure
+	}
+	payload = {
+		'time' : time.time()
+	}
+	requests.post("http://{}/disarm".format(ADDRESS), headers=headers, data=json.dumps(payload))
 def configureDevice(keys=["0","0","0"], distance="0", number="", email="", option=0):
 	print(keys, distance, number, email)
 	isConfigured = False
@@ -106,13 +138,13 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 		grovepi.digitalWrite(PORT_BUZZER,0)
 	#write to the config file and clear display
 	lcd.setText("")
-	lcd.setRGB(0,0,0)
 	configFile = open("security_config.txt", "w+")
 	for key in keys:
 		configFile.write(str(key) +"\n")
 	configFile.write(str(distance.rstrip()) + "\n")
 	configFile.write(str(number.rstrip()) + "\n")
 	configFile.write(str(email.rstrip()) + "\n")
+	send_config(number.rstrip(), email.rstrip())
 	configFile.close()
 def validateCombo(userKeys, keys):
 	for i in range(3):
@@ -173,14 +205,15 @@ if __name__ == '__main__':
 			grovepi.digitalWrite(PORT_RED_LED,1)
 			if(timeDiff  >= 60):
 				lcd.setRGB(255,0,0)
-				client = Client(account_ssid, auth_token)
-				message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
+				# client = Client(account_ssid, auth_token)
+				# message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
 				s = smtplib.SMTP('smtp.gmail.com', 587)
 				s.starttls()
 				s.login("rpimotionalarmdevice", "")
 				message = "Your alarm has been triggered!"
 				s.sendmail("rpimotionalarmdevice", email, message)
 				s.quit()
+
 				deviceState = 4
 				keys = ["_","_","_"]
 				lcd.setText("")
@@ -212,7 +245,6 @@ if __name__ == '__main__':
 				distance = int(lines[3])
 				number = lines[4]
 				email = lines[5]
-				lcd.setRGB(255,255,255)
 			index += 1
 			if(index > len(msg)-16):
 				index = 0
