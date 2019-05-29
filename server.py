@@ -38,7 +38,7 @@ def alarm_triggered_callback():
 	return 'Ok'
 
 @app.route('/disarm', methods=['POST'])
-def disarm_callback(time):
+def disarm_callback():
 	payload = request.get_json()
 	print("Alarm triggered at: " + str(payload['time']))
 	global start 
