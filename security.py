@@ -185,6 +185,7 @@ if __name__ == '__main__':
 			lcd.setRGB(255,255,255)
 			timeDiff = int(time.time()) - int(start)
 			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
+			send_alarm()
 			if(currentKey == 1):
 				keys[0] = get_value()
 			elif(currentKey == 2):
@@ -218,6 +219,7 @@ if __name__ == '__main__':
 				keys = ["_","_","_"]
 				lcd.setText("")
 		elif(deviceState == 3):
+			send_disarm()
 			msg_option = ""
 			option = get_value(5)
 			if(option <= 1):

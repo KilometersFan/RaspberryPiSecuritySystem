@@ -40,7 +40,7 @@ def disarm_callback(time):
 
 async def counter():
 	end = time.time()
-	while(end - start < 30):
+	while(end - start < 60):
 		end = time.time()
 	if(start != 0):
 		# client = Client(account_ssid, auth_token)
