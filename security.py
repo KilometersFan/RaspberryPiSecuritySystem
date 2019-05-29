@@ -144,7 +144,7 @@ def configureDevice(keys=["0","0","0"], distance="0", number="", email="", optio
 	configFile.write(str(distance.rstrip()) + "\n")
 	configFile.write(str(number.rstrip()) + "\n")
 	configFile.write(str(email.rstrip()) + "\n")
-	send_config(number.rstrip(), email.rstrip())
+	send_config(email.rstrip(), number.rstrip())
 	configFile.close()
 def validateCombo(userKeys, keys):
 	for i in range(3):

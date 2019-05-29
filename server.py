@@ -25,6 +25,8 @@ def configure():
 	email = payload['email']
 	global number
 	number = payload['number']
+	print("email: " + email)
+	print("number: " + number)
 	return 'Ok'
 
 @app.route('/alarm_triggered', methods=['POST'])
@@ -35,7 +37,7 @@ def alarm_triggered_callback():
 	start = time.time()
 	loop = asyncio.get_event_loop()
 	loop.run_until_complete(counter())
-	lopo.close()
+	loop.close()
 	return 'Ok'
 
 @app.route('/disarm', methods=['POST'])
@@ -49,6 +51,7 @@ def disarm_callback():
 async def counter():
 	end = time.time()
 	global start 
+	global email
 	while(end - start < 60):
 		end = time.time()
 	if(start != 0):
