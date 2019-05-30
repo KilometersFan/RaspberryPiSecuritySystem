@@ -25,8 +25,6 @@ def configure():
 	configFile.write(email+"\n")
 	configFile.write(number)
 	configFile.close()
-	print("email: " + email)
-	print("number: " + number)
 	return 'Ok'
 
 @app.route('/alarm_triggered', methods=['POST'])
@@ -35,7 +33,8 @@ def alarm_triggered_callback():
 	print("Alarm triggered at: " + str(payload['time']))
 	global start 
 	start = time.time()
-	loop = asyncio.get_event_loop()
+	loop = asyncio.new_event_loop()
+	asyncio.set_event_loop(loop)
 	loop.run_until_complete(counter())
 	loop.close()
 	return 'Ok'
@@ -55,7 +54,7 @@ async def counter():
 	number = lines[1]
 	end = time.time()
 	global start 
-	while(end - start < 60):
+	await while(end - start < 60):
 		end = time.time()
 	if(start != 0):
 		# client = Client(account_ssid, auth_token)
