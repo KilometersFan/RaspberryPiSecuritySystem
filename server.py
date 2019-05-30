@@ -20,6 +20,8 @@ loop = asyncio.get_event_loop()
 def configure():
 	configFile = open('server_config.txt', 'w+')
 	payload = request.get_json()
+	email = payload['email']
+	number = payload['number']
 	configFile.write(email.rstrip())
 	configFile.write(number.rstrip())
 	configFile.close()
@@ -41,7 +43,7 @@ def alarm_triggered_callback():
 @app.route('/disarm', methods=['POST'])
 def disarm_callback():
 	payload = request.get_json()
-	print("Alarm triggered at: " + str(payload['time']))
+	print("Alarm disarmed at: " + str(payload['time']))
 	global start 
 	start = 0
 	return 'Ok'
@@ -53,7 +55,6 @@ async def counter():
 	number = lines[1]
 	end = time.time()
 	global start 
-	global email
 	while(end - start < 60):
 		end = time.time()
 	if(start != 0):
