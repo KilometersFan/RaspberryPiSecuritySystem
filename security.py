@@ -187,7 +187,7 @@ if __name__ == '__main__':
 			timeDiff = int(time.time()) - int(start)
 			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
 			if(not alarm_sent):
-				send_alarm()
+				#send_alarm()
 				alarm_sent = True
 			if(currentKey == 1):
 				keys[0] = get_value()
@@ -213,7 +213,7 @@ if __name__ == '__main__':
 				# message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
 				s = smtplib.SMTP('smtp.gmail.com', 587)
 				s.starttls()
-				s.login("rpimotionalarmdevice", "")
+				s.login("rpimotionalarmdevice", "12p153cu121ty")
 				message = "Your alarm has been triggered!"
 				s.sendmail("rpimotionalarmdevice", email, message)
 				s.quit()
