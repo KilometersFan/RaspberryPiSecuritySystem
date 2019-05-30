@@ -22,8 +22,8 @@ def configure():
 	payload = request.get_json()
 	email = payload['email']
 	number = payload['number']
-	configFile.write(email.rstrip())
-	configFile.write(number.rstrip())
+	configFile.write(email+"\n")
+	configFile.write(number)
 	configFile.close()
 	print("email: " + email)
 	print("number: " + number)
@@ -50,7 +50,7 @@ def disarm_callback():
 
 async def counter():
 	configFile = open('server_config.txt', 'r+')
-	lines = configFile.readLines()
+	lines = configFile.readlines()
 	email = lines[0]
 	number = lines[1]
 	end = time.time()
