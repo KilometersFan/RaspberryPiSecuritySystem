@@ -46,12 +46,6 @@ def disarm_callback():
 	start = 0
 	return 'Ok'
 
-async def waiting():
-	while True:
-		await asyncio.sleep(min(60, start))
-		break
-	return start
-
 async def counter():
 	configFile = open('server_config.txt', 'r+')
 	lines = configFile.readlines()
@@ -65,7 +59,7 @@ async def counter():
 		# message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
 		s = smtplib.SMTP('smtp.gmail.com', 587)
 		s.starttls()
-		s.login("rpimotionalarmdevice", "12p153cu121ty")
+		s.login("rpimotionalarmdevice", "")
 		message = "Your alarm has been triggered!"
 		s.sendmail("rpimotionalarmdevice", email, message)
 		s.quit()
