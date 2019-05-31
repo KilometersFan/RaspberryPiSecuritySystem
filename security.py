@@ -177,6 +177,7 @@ if __name__ == '__main__':
 	while True:
 		print(deviceState)
 		if(deviceState == 1):
+			lcd.setRGB(0,0,0)
 			grovepi.digitalWrite(PORT_GREEN_LED,1)
 			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)
 			if(measured_distance < distance -5 or measured_distance > distance + 5):
@@ -188,7 +189,7 @@ if __name__ == '__main__':
 			timeDiff = int(time.time()) - int(start)
 			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
 			if(not alarm_sent):
-				#send_alarm()
+				send_alarm()
 				alarm_sent = True
 			if(currentKey == 1):
 				keys[0] = get_value()
