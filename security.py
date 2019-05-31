@@ -175,6 +175,7 @@ if __name__ == '__main__':
 	alarm_sent = False
 	disarm_sent = False
 	while True:
+		print(deviceState)
 		if(deviceState == 1):
 			grovepi.digitalWrite(PORT_GREEN_LED,1)
 			measured_distance = grovepi.ultrasonicRead(PORT_RANGE)

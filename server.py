@@ -45,13 +45,7 @@ def disarm_callback():
 	print("Alarm disarmed at: " + str(payload['time']))
 	global server_state 
 	server_state = 0
-	global was_disarmed
-	was_disarmed = True
 	return 'Ok'
-
-async def wait_60():
-	asyncio.sleep(60)
-	return False
 
 async def counter():
 	configFile = open('server_config.txt', 'r+')
