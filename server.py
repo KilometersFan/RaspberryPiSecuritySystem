@@ -37,7 +37,6 @@ def alarm_triggered_callback():
 	loop = asyncio.new_event_loop()
 	asyncio.set_event_loop(loop)
 	loop.run_until_complete(counter())
-	loop.run_until_complete(wait_60())
 	return 'Ok'
 
 @app.route('/disarm', methods=['POST'])
@@ -52,8 +51,7 @@ def disarm_callback():
 
 async def wait_60():
 	asyncio.sleep(60)
-	global was_disarmed
-	was_disarmed = False
+	return False
 
 async def counter():
 	configFile = open('server_config.txt', 'r+')
@@ -62,7 +60,7 @@ async def counter():
 	number = lines[1]
 	global state 
 	await asyncio.sleep(60)
-	if(state != 0 and not was_disarmed):
+	if(state != 0):
 		# client = Client(account_ssid, auth_token)
 		# message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
 		s = smtplib.SMTP('smtp.gmail.com', 587)
