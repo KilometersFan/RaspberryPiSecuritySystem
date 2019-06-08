@@ -7,6 +7,7 @@ import grove_rgb_lcd as lcd
 import smtplib
 import json
 import requests
+import _thread
 from twilio.rest import Client
 
 PORT_BUTTON = 3
@@ -19,7 +20,7 @@ PORT_GREEN_LED = 6
 account_ssid = 'AC32c39154f82d33309f2001ef3614fd57'
 auth_token = ''
 
-ADDRESS = 'pi@192.168.1.113:4250'
+ADDRESS = ''
 
 grovepi.pinMode(PORT_BUZZER, "OUTPUT")
 grovepi.pinMode(PORT_BUTTON, "INPUT")
@@ -72,7 +73,7 @@ def send_alarm():
 	payload = {
 		'time' : str(time.time())
 	}
-	requests.post("http://{}/alarm_triggered".format(ADDRESS), headers=headers, data=json.dumps(payload))
+	requests.post("http://{}/alarm_triggered".format(ADDRESS),headers=headers,data=json.dumps(payload))
 def send_disarm():
 	headers = {
 		'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ if __name__ == '__main__':
 			timeDiff = int(time.time()) - int(start)
 			lcd.setText_norefresh("{:>2} S UNTIL ALARM\n{:>3} {:>3} {:>3}".format(60-timeDiff, keys[0], keys[1], keys[2]))
 			if(not alarm_sent):
-				send_alarm()
+				_thread.start_new_thread(send_alarm,())
 				alarm_sent = True
 			if(currentKey == 1):
 				keys[0] = get_value()
@@ -211,8 +212,8 @@ if __name__ == '__main__':
 			grovepi.digitalWrite(PORT_RED_LED,1)
 			if(timeDiff  >= 60):
 				lcd.setRGB(255,0,0)
-				# client = Client(account_ssid, auth_token)
-				# message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
+				client = Client(account_ssid, auth_token)
+				message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
 				s = smtplib.SMTP('smtp.gmail.com', 587)
 				s.starttls()
 				s.login("rpimotionalarmdevice", "")
@@ -225,7 +226,7 @@ if __name__ == '__main__':
 				lcd.setText("")
 		elif(deviceState == 3):
 			if(not disarm_sent):
-				send_disarm()
+				_thread.start_new_thread(send_disarm,())
 				disarm_sent = True
 			msg_option = ""
 			option = get_value(5)
