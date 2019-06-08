@@ -6,6 +6,7 @@ import sys
 import json
 import time
 import asyncio
+import _thread
 import smtplib
 from twilio.rest import Client
 
@@ -15,7 +16,6 @@ auth_token = ''
 app = Flask('Raspberry Pi Security System')
 server_state = 0
 was_disarmed = False
-loop = asyncio.get_event_loop()
 
 @app.route('/configure', methods=['POST'])
 def configure():
@@ -30,33 +30,30 @@ def configure():
 
 @app.route('/alarm_triggered', methods=['POST'])
 def alarm_triggered_callback():
-	payload = request.get_json()
-	print("Alarm triggered at: " + str(payload['time']))
+	start = time.time()
+	print("Alarm triggered at: " + str(start))
 	global server_state 
 	server_state = 1
-	loop = asyncio.new_event_loop()
-	asyncio.set_event_loop(loop)
-	loop.run_until_complete(counter())
+	_thread.start_new_thread(counter,())
 	return 'Ok'
 
 @app.route('/disarm', methods=['POST'])
 def disarm_callback():
-	payload = request.get_json()
-	print("Alarm disarmed at: " + str(payload['time']))
+	print("Alarm disarmed at: " + str(time.time()))
 	global server_state 
 	server_state = 0
 	return 'Ok'
 
-async def counter():
+def counter():
 	configFile = open('server_config.txt', 'r+')
 	lines = configFile.readlines()
 	email = lines[0]
 	number = lines[1]
 	global server_state 
-	await asyncio.sleep(60)
+	time.sleep(60)
 	if(server_state != 0):
-		# client = Client(account_ssid, auth_token)
-		# message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
+		client = Client(account_ssid, auth_token)
+		message = client.messages.create(from_ = '+14245810952',body = 'Your alarm has been triggered!', to = number)
 		s = smtplib.SMTP('smtp.gmail.com', 587)
 		s.starttls()
 		s.login("rpimotionalarmdevice", "")
