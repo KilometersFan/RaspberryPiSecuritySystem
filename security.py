@@ -176,7 +176,6 @@ if __name__ == '__main__':
 	alarm_sent = False
 	disarm_sent = False
 	while True:
-		print(deviceState)
 		if(deviceState == 1):
 			lcd.setRGB(0,0,0)
 			grovepi.digitalWrite(PORT_GREEN_LED,1)
@@ -203,6 +202,7 @@ if __name__ == '__main__':
 					deviceState = 3
 					index = 0
 					lcd.setText("")
+					alarm_sent = False
 				else:
 					currentKey = 1
 					lcd.setRGB(255,0,0)
