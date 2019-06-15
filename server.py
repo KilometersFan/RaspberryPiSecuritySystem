@@ -32,10 +32,7 @@ def configure():
 def alarm_triggered_callback():
 	start = time.time()
 	print("Alarm triggered at: " + str(start))
-	#Old method
-	#_thread.start_new_thread(counter,())
-	#New method
-	alarm_thread = threading.Thread(target="counter", args=(1,))
+	alarm_thread = threading.Thread(target=counter, args=(1,))
 	alarm_queue.put(alarm_thread)
 	alarm_thread.start()
 	return 'Ok'
@@ -65,4 +62,4 @@ def counter(state):
 
 if __name__ == '__main__':
 	print("Server started!")
-	app.run(debug=False, host='0.0.0.0', port=4250)
+	app.run(threaded=True,debug=False, host='0.0.0.0', port=4250)
